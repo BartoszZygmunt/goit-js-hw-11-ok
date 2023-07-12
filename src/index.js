@@ -100,8 +100,10 @@ const printImage = image => {
 
 const loadMore = async () => {
   if (total / 40 > currentPage) {
+    //przerwij, jeśłi trwa już wczytywanie...
     if (isLoading === true) {
-      debugger;
+      //debugger;
+      console.log('Już wczytuję!!! Poczekaj chwilę!');
       return;
     }
 
@@ -110,9 +112,9 @@ const loadMore = async () => {
     currentPage += 1;
     const textToSearch = localStorage.getItem('searchText');
     await getPhotos(textToSearch);
+    scrollNow();
 
     isLoading = false;
-    scrollNow();
   } else {
     Notify.failure(
       "We're sorry, but you've reached the end of search results."
