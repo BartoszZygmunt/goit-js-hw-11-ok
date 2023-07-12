@@ -15,9 +15,7 @@ let lightbox = new SimpleLightbox('.gallery a', {
 const search = document.getElementById('search-input');
 const searchButton = document.getElementById('search-button');
 const output = document.getElementById('js-output');
-const more = document.getElementById('more');
-
-more.classList.add('hide');
+let isLoading = false;
 
 //ustaw conf dla PixaBay
 const configAxios = searchText => {
@@ -56,11 +54,9 @@ async function getPhotos(searchText) {
       }
 
       response.data.hits.forEach(image => printImage(image));
-      more.classList.remove('hide');
       lightbox.refresh();
     }
   } catch (error) {
-    //console.log('bład jakiś...');
     console.error(error);
   }
 }
@@ -74,7 +70,7 @@ const printImage = image => {
   const views = image.views;
   const comments = image.comments;
   const downloads = image.downloads;
-  //console.log(smallImage);
+
   output.innerHTML += `
   <div class="photo-card">
   <a href="${largeImage}" target="_blank">
@@ -99,28 +95,30 @@ const printImage = image => {
     </p>
   </div>
 </div>
-
-
   `;
 };
 
-more.addEventListener('click', async event => {
-  event.preventDefault();
+const loadMore = async () => {
   if (total / 40 > currentPage) {
+    if (isLoading === true) {
+      debugger;
+      return;
+    }
+
+    isLoading = true;
+
     currentPage += 1;
     const textToSearch = localStorage.getItem('searchText');
-    //próba rozwiązania problemu z github ...
-    if (textToSearch === null) {
-      textToSearch = '';
-    }
     await getPhotos(textToSearch);
+
+    isLoading = false;
     scrollNow();
   } else {
     Notify.failure(
       "We're sorry, but you've reached the end of search results."
     );
   }
-});
+};
 
 searchButton.addEventListener('click', async event => {
   event.preventDefault();
@@ -144,3 +142,16 @@ const scrollNow = () => {
     behavior: 'smooth',
   });
 };
+
+// Sprawdź, czy strona jest na końcu dokumentu
+const isPageBottom = () => {
+  return (
+    window.innerHeight + window.scrollY >= document.body.offsetHeight - 100
+  );
+};
+
+window.addEventListener('scroll', () => {
+  if (isPageBottom()) {
+    loadMore();
+  }
+});
