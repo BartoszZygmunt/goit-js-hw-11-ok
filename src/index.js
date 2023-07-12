@@ -43,7 +43,7 @@ async function getPhotos(searchText) {
       configAxios(searchText)
     );
     //debugger;
-    console.log(response);
+    //console.log(response);
     if (response.data.hits.length === 0) {
       Notify.failure(
         'Sorry, there are no images matching your search query. Please try again.'
@@ -60,7 +60,7 @@ async function getPhotos(searchText) {
       lightbox.refresh();
     }
   } catch (error) {
-    console.log('bład jakiś...');
+    //console.log('bład jakiś...');
     console.error(error);
   }
 }
@@ -74,7 +74,7 @@ const printImage = image => {
   const views = image.views;
   const comments = image.comments;
   const downloads = image.downloads;
-  console.log(smallImage);
+  //console.log(smallImage);
   output.innerHTML += `
   <div class="photo-card">
   <a href="${largeImage}" target="_blank">
@@ -114,6 +114,7 @@ more.addEventListener('click', async event => {
       textToSearch = '';
     }
     await getPhotos(textToSearch);
+    scrollNow();
   } else {
     Notify.failure(
       "We're sorry, but you've reached the end of search results."
@@ -126,11 +127,20 @@ searchButton.addEventListener('click', async event => {
   currentPage = 1;
   const inputValue = search.value;
   output.innerHTML = '';
-  console.log('próbujemy...');
+  //console.log('próbujemy...');
   await getPhotos(inputValue);
   localStorage.setItem('searchText', inputValue);
   search.value = '';
 });
 
-//test
-//getPhotos('cats');
+//przewijanie strony
+const scrollNow = () => {
+  const { height: cardHeight } = document
+    .querySelector('.gallery')
+    .firstElementChild.getBoundingClientRect();
+  console.log(cardHeight);
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
+};
