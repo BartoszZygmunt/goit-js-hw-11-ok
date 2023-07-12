@@ -56,3 +56,11 @@
 .hide {
   display: none !important;
 }
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+.load-more {
+  background-color: #2d9de9;
+}
