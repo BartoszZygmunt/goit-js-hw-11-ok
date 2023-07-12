@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
+import _ from 'loadsh';
 
 let currentPage = 1;
 let total = 1;
@@ -152,8 +153,11 @@ const isPageBottom = () => {
   );
 };
 
-window.addEventListener('scroll', () => {
-  if (isPageBottom()) {
-    loadMore();
-  }
-});
+window.addEventListener(
+  'scroll',
+  _.throttle(() => {
+    if (isPageBottom()) {
+      loadMore();
+    }
+  }, 600)
+);
