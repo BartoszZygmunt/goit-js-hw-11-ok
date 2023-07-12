@@ -112,6 +112,7 @@ const loadMore = async () => {
 
     currentPage += 1;
     const textToSearch = localStorage.getItem('searchText');
+    Notify.info('Loading...');
     await getPhotos(textToSearch);
     scrollNow();
 
@@ -139,7 +140,7 @@ const scrollNow = () => {
   const { height: cardHeight } = document
     .querySelector('.gallery')
     .firstElementChild.getBoundingClientRect();
-  console.log(cardHeight);
+  //console.log(cardHeight);
   window.scrollBy({
     top: cardHeight * 2,
     behavior: 'smooth',
@@ -159,5 +160,5 @@ window.addEventListener(
     if (isPageBottom()) {
       loadMore();
     }
-  }, 600)
+  }, 100)
 );
