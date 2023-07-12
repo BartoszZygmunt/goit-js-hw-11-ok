@@ -114,7 +114,7 @@ const loadMore = async () => {
     const textToSearch = localStorage.getItem('searchText');
     Notify.info('Loading...');
     await getPhotos(textToSearch);
-    scrollNow();
+    //setTimeout(scrollNow(), 1000);
 
     isLoading = false;
   } else {
@@ -135,17 +135,17 @@ searchButton.addEventListener('click', async event => {
   search.value = '';
 });
 
-//przewijanie strony
-const scrollNow = () => {
-  const { height: cardHeight } = document
-    .querySelector('.gallery')
-    .firstElementChild.getBoundingClientRect();
-  //console.log(cardHeight);
-  window.scrollBy({
-    top: cardHeight * 2,
-    behavior: 'smooth',
-  });
-};
+//przewijanie strony - usunięto, bo jest auto load
+// const scrollNow = () => {
+//   const { height: cardHeight } = document
+//     .querySelector('.gallery')
+//     .firstElementChild.getBoundingClientRect();
+//   //console.log(cardHeight);
+//   window.scrollBy({
+//     top: cardHeight * 2,
+//     behavior: 'smooth',
+//   });
+// };
 
 // Sprawdź, czy strona jest na końcu dokumentu
 const isPageBottom = () => {
